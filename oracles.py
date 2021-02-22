@@ -3,6 +3,7 @@ import numpy as np
 import scipy
 from scipy.special import logsumexp, softmax
 
+
 class BaseSmoothOracle(object):
     """
     Base class for implementation of oracles.
@@ -38,6 +39,7 @@ class BaseSmoothOracle(object):
         """
         raise NotImplementedError('Third derivative oracle is not implemented.')
 
+
 class OracleCallsCounter(BaseSmoothOracle):
     """
     Wrapper to count oracle calls.
@@ -69,6 +71,7 @@ class OracleCallsCounter(BaseSmoothOracle):
     def third_vec_vec(self, x, v):
         self.third_vec_vec_calls += 1
         return self.oracle.third_vec_vec(x, v)
+
 
 class LogSumExpOracle(BaseSmoothOracle):
     """
@@ -137,6 +140,7 @@ class LogSumExpOracle(BaseSmoothOracle):
                 self.matvec_ATx(self.pi * self.Av) - \
                 self.AT_pi_v * self.AT_pi)
 
+
 def create_log_sum_exp_oracle(A, b, mu):
     """
     Auxiliary function for creating log-sum-exp oracle.
@@ -153,23 +157,3 @@ def create_log_sum_exp_oracle(A, b, mu):
 
     return LogSumExpOracle(matvec_Ax, matvec_ATx, matmat_ATsA, b, mu)
 
-def create_log_sum_exp_zero_oracle(A, b, mu):
-    """
-    Creates log-sum-exp oracle with optimum at zero.
-    """
-    oracle_0 = create_log_sum_exp_oracle(A, b, mu)
-    g = oracle_0.grad(np.zeros(A.shape[1]))
-    A_new = A - g
-
-    matvec_Ax = lambda x: A_new.dot(x)
-    matvec_ATx = lambda x: A_new.T.dot(x)
-
-    B = None
-
-    def matmat_ATsA(s):
-        nonlocal B
-        if B is None: 
-            B = A_new.toarray() if scipy.sparse.issparse(A_new) else A_new
-        return B.T.dot(B * s.reshape(-1, 1))
-
-    return LogSumExpOracle(matvec_Ax, matvec_ATx, matmat_ATsA, b, mu)

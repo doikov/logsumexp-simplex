@@ -1,17 +1,15 @@
 import numpy as np
-
 from collections import defaultdict
 from datetime import datetime
-
 from oracles import OracleCallsCounter
 
 
 def FrankWolfe(oracle, x_0, n_iters=1000, trace=True):
     """
-    Run Frank-Wolfe algorithm for 'n_iters' iterations, minimizing
-    smooth function 'f' over the standard Simplex.
+    Run Frank-Wolfe algorithm, minimizing
+    smooth function f over the standard Simplex.
     
-    'oracle' is an instance of BaseSmoothOracle for the objective 'f'.
+    'oracle' is an instance of BaseSmoothOracle representing the objective f.
     """
     
     oracle = OracleCallsCounter(oracle)
@@ -57,8 +55,6 @@ def ContrNewton(oracle, x_0, n_iters=1000,
     of Frank-Wolfe) to solve the inner subproblem inexactly. The required 
     accuracy level is bounded by the Estimating Function (duality gap).
     'c' is a flexible parameter controlling the inner accuracy.
-
-    'oracle' is an instance of BaseSmoothOracle for the objective 'f'.
     """
     
     oracle = OracleCallsCounter(oracle)

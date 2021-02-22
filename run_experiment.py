@@ -1,10 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
 from collections import defaultdict
 from datetime import datetime
 from scipy.stats import ortho_group
-
 from methods import FrankWolfe
 from methods import ContrNewton
 from oracles import create_log_sum_exp_oracle
