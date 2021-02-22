@@ -43,7 +43,7 @@ def FrankWolfe(oracle, x_0, n_iters=1000, trace=True):
         f_k = oracle.func(x_k)
         g_k = oracle.grad(x_k)
         
-    return history
+    return x_k, "iterations_exceeded", history
 
 
 def ContrNewton(oracle, x_0, n_iters=1000, 
@@ -141,5 +141,5 @@ def ContrNewton(oracle, x_0, n_iters=1000,
         if trace:
             history['t'].append(t)
     
-    return history
+    return x_k, "iterations_exceeded", history
 

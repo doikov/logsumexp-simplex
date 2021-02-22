@@ -35,13 +35,13 @@ def RunExperiment(n, m, mu, fw_iters, cn_iters, cn_inner_iters,
     
     start_timestamp = datetime.now()
     print('FW ...', end=' ', flush=True)
-    fw = FrankWolfe(oracle, x_0, n_iters=fw_iters)
+    _, status, fw = FrankWolfe(oracle, x_0, n_iters=fw_iters)
     print('DONE. Time: %s' % (str(datetime.now() - start_timestamp)))
     
     start_timestamp = datetime.now()
     print('CN ...', end=' ', flush=True)
-    cn = ContrNewton(oracle, x_0, n_iters=cn_iters, inner_iters=cn_inner_iters, 
-                     c=c)
+    _, status, cn = ContrNewton(oracle, x_0, n_iters=cn_iters,
+                                inner_iters=cn_inner_iters, c=c)
     print('DONE. Time: %s' % (str(datetime.now() - start_timestamp)))
     
     fw_skip = fw_iters // 100
